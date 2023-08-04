@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<munit:config name="mule-testcontainers-example-test-suite.xml" />
+	<munit:before-suite name="mule-testcontainers-example-test-suite-before-suite" doc:id="d1bd6b57-6aef-4013-a967-f8257cdf1556" >
+		<logger level="INFO" doc:name="INFO Logger" doc:id="fc83083e-e6da-498b-9743-5b026f36dd06" message="INITIALIZE DB" />
+		<db:execute-ddl doc:name="create database" doc:id="069f4356-0ca3-455e-9673-36554dc91393" config-ref="Database_Config">
+			<db:sql><![CDATA[CREATE TABLE IF NOT EXISTS user_tbl (
+  id serial PRIMARY KEY,
+  username varchar(250) NOT NULL,
+  email varchar(250) NOT NULL
+);]]></db:sql>
+		</db:execute-ddl>
+	</munit:before-suite>
+	<munit:before-test name="mule-testcontainers-example-test-suite-before-test" doc:id="adae8f75-5cc5-4eb1-9c0b-da5eb2948267" >
+		<logger level="INFO" doc:name="INFO Logger" doc:id="f3aa9d58-2bc9-41e8-9ee1-93cc850c8364" message="DELETE ALL AND ADD DEFAULT USER" />
+		<db:execute-script doc:name="delete content of table" doc:id="ed4c86c6-414c-4052-bac6-69847ef8e38c" config-ref="Database_Config">
+				<db:sql><![CDATA[truncate user_tbl;
+delete from user_tbl;]]></db:sql>
+			</db:execute-script>
+		<db:bulk-insert doc:name="insert users" doc:id="56b8bec3-3d3b-492b-b8ae-1f7afb177489" config-ref="Database_Config">
+			<db:bulk-input-parameters><![CDATA[#[[
+	{
+		username: "Max Mustermann",
+		email: "m.mustermann@gmail.com"
+	}
+]]]]></db:bulk-input-parameters>
+			<db:sql><![CDATA[INSERT INTO user_tbl (username, email) VALUES (:username, :email)]]></db:sql>
+		</db:bulk-insert>
+	</munit:before-test>
+	<munit:test name="mule-testcontainers-example-test-suite-mule-testcontainers-example-list-users" doc:id="6f94e4b3-324b-4f35-8523-55ceef55244a" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-testcontainers-example-list-users" doc:id="aeb1e5d0-fb39-4450-8ed5-dd8d1c4082ef" name="mule-testcontainers-example-list-users"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that payload has size 1" doc:id="c9a8aca0-9955-45b5-b992-490d8575103b" expression="#[output application/java --- payload]" is="#[MunitTools::hasSize(1)]"/>
+			<munit-tools:assert-that doc:name="Assert payload is as expected" doc:id="5c3fc110-dd4a-4150-98eb-89ec6004e370" is='#[MunitTools::equalTo({email: "m.mustermann@gmail.com", username: "Max Mustermann"})]' expression="#[output application/json --- {email: payload[0].email, username: payload[0].username}]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="mule-testcontainers-example-test-suite-mule-testcontainers-example-user-add" doc:id="fa19620e-af8c-41b0-9166-1b062abf2c07" description="Test">
+		<munit:execution >
+			<munit:set-event doc:name="Set user" doc:id="3b17b20e-6fae-487d-a8b4-41581acbaea3" >
+				<munit:payload value='#[{&#10;	username: "Kathrin Mustermann",&#10;	email: "k.mustermann@gmail.com"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to mule-testcontainers-example-user-add" doc:id="f04478a9-165d-4504-baae-5266faca4458" name="mule-testcontainers-example-user-add"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert payload returns id of new user" doc:id="ae4ecf5a-4ac7-4627-b1ef-0a3d19eaab54" is="#[MunitTools::notNullValue()]" expression="#[payload.id]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

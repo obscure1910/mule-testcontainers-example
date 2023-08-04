@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:spring="http://www.mulesoft.org/schema/mule/spring"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="fd67f18f-74be-4708-a423-334b4c7b1512" file="${env}.properties" />
+	<global-property doc:name="Global Property" doc:id="cb41ea94-23e4-421a-ab7e-cf5e40013cdc" name="key" value="1234567891011121" />
+	<global-property doc:name="Global Property" doc:id="7b85381d-a065-47eb-8836-7e86035c6091" name="env" value="dev" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="ad5850f9-26a5-4212-8b23-80184bdfa22a" file="${env}-secured.properties" key="${key}" />
+	<spring:config name="Spring_Config" doc:name="Spring Config" doc:id="4c5eb509-d537-45eb-aac1-028e741f3948" files="${spring.config.file}" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="331d8672-44b6-4383-9ef1-9703b855fc81" >
+		<db:data-source-connection dataSourceRef="postgresqlDataSource"/>
+	</db:config>
+</mule>

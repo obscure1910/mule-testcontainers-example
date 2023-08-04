@@ -1,0 +1,35 @@
+#%RAML 1.0
+title: User API
+version: 1.0
+
+types:
+  UserRequest:
+    properties:
+      username: string
+      email: string
+
+  UserResponse:
+    properties:
+      id: integer
+      username: string
+      email: string
+
+/users:
+  post:
+    description: Add a new user
+    body:
+      application/json:
+        type: UserRequest
+    responses:
+      201:
+        body:
+          application/json:
+            type: UserResponse
+
+  get:
+    description: Get all users
+    responses:
+      200:
+        body:
+          application/json:
+            type: UserResponse[]

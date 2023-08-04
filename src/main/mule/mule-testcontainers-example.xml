@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="mule-testcontainers-example-user-add" doc:id="b71ede70-0a4c-445c-9f8f-a142d0141705" >
+		<db:insert doc:name="insert user into user_tbl" doc:id="4acb5e97-d7ab-47d2-8685-ed899dff763c" config-ref="Database_Config" autoGenerateKeys="true">
+			<reconnect />
+			<db:sql ><![CDATA[INSERT INTO user_tbl (username, email)
+VALUES(:username, :email)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	username: payload.username,
+	email: payload.email
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="get generated key" doc:id="67e9ad87-08dd-43ac-a0b2-ea845cd389f6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	id: payload.generatedKeys.id
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mule-testcontainers-example-list-users" doc:id="fbc8c5a1-e921-4c61-8c5d-ee0baadbe3ff" >
+		<db:select doc:name="select all users" doc:id="f441794a-1a35-4fd6-887e-c3a21f3260cc" config-ref="Database_Config">
+			<reconnect />
+			<db:sql ><![CDATA[SELECT * FROM user_tbl]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="convert to json" doc:id="e46360c8-4a7a-4016-80b4-1b50d2e1ef9b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	id: payload01.id,
+	email: payload01.email,
+	username: payload01.username
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
