@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+<mule xmlns:mule-testcontainers-db="http://www.mulesoft.org/schema/mule/mule-testcontainers-db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mule-testcontainers-db http://www.mulesoft.org/schema/mule/mule-testcontainers-db/current/mule-mule-testcontainers-db.xsd">
 	<global-property doc:name="Global Property" doc:id="cf01c296-4038-4d99-8de1-cfd4d1a02338" name="env" value="munit" doc:description="munit"/>
+	<mule-testcontainers-db:config name="Mule_testcontainers_db_Config" doc:name="Mule-testcontainers-db Config" doc:id="5a9cb6eb-3070-4237-8ca9-8ba21292a83d" jdbcUrl="${db.url}" />
 </mule>

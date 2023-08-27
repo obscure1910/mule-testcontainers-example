@@ -16,13 +16,12 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<app.runtime>4.4.0-20220824</app.runtime>
-		<mule.maven.plugin.version>3.8.0</mule.maven.plugin.version>
+		<mule.maven.plugin.version>3.8.6</mule.maven.plugin.version>
 		<spring.version>5.2.22.RELEASE</spring.version>
 		<spring.module.version>1.3.8</spring.module.version>
 		<spring.security.version>5.3.13.RELEASE</spring.security.version>
-		<testcontainers.db.version>1.18.3</testcontainers.db.version>
+		<testcontainers.db.version>1.19.0</testcontainers.db.version>
 		<munit.version>2.3.13</munit.version>
-		<snakeyaml.version>2.0</snakeyaml.version>
 	</properties>
 
 	<build>
@@ -40,32 +39,8 @@
 				<configuration>
 					<sharedLibraries>
 						<sharedLibrary>
-							<groupId>org.springframework.security</groupId>
-							<artifactId>spring-security-core</artifactId>
-						</sharedLibrary>
-						<sharedLibrary>
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-beans</artifactId>
-						</sharedLibrary>
-						<sharedLibrary>
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-context</artifactId>
-						</sharedLibrary>
-						<sharedLibrary>
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-core</artifactId>
-						</sharedLibrary>
-						<sharedLibrary>
-							<groupId>org.springframework.security</groupId>
-							<artifactId>spring-security-config</artifactId>
-						</sharedLibrary>
-						<sharedLibrary>
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-jdbc</artifactId>
-						</sharedLibrary>
-						<sharedLibrary>
-							<groupId>org.springframework.security</groupId>
-							<artifactId>spring-security-crypto</artifactId>
+							<groupId>org.testcontainers</groupId>
+							<artifactId>postgresql</artifactId>
 						</sharedLibrary>
 					</sharedLibraries>
 				</configuration>
@@ -97,43 +72,6 @@
 	</build>
 
 	<dependencies>
-		<!-- spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mule.modules</groupId>
-			<artifactId>mule-spring-module</artifactId>
-			<version>${spring.module.version}</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>${spring.security.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-crypto</artifactId>
-			<version>${spring.security.version}</version>
-		</dependency>
 		<!-- database -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -142,16 +80,17 @@
 		</dependency>
 		<!-- testcontainers -->
 		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${testcontainers.db.version}</version>
+			<groupId>io.github.obscure1910</groupId>
+			<artifactId>mule-testcontainers-db</artifactId>
+			<version>1.0.0</version>
 			<scope>test</scope>
+			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>jdbc</artifactId>
-			<version>${testcontainers.db.version}</version>
+			<artifactId>postgresql</artifactId>
 			<scope>test</scope>
+			<version>${testcontainers.db.version}</version>
 		</dependency>
 		<!-- mule -->
 		<dependency>

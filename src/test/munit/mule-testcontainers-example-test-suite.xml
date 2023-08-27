@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
-	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+<mule xmlns:mule-testcontainers-db="http://www.mulesoft.org/schema/mule/mule-testcontainers-db"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
 		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/mule-testcontainers-db http://www.mulesoft.org/schema/mule/mule-testcontainers-db/current/mule-mule-testcontainers-db.xsd">
 	<munit:config name="mule-testcontainers-example-test-suite.xml" />
 	<munit:before-suite name="mule-testcontainers-example-test-suite-before-suite" doc:id="d1bd6b57-6aef-4013-a967-f8257cdf1556" >
+		<mule-testcontainers-db:start-test-containers doc:name="Start test containers" doc:id="e1289d66-f8a0-4e99-a22f-92bfd1106dce" config-ref="Mule_testcontainers_db_Config"/>
 		<logger level="INFO" doc:name="INFO Logger" doc:id="fc83083e-e6da-498b-9743-5b026f36dd06" message="INITIALIZE DB" />
 		<db:execute-ddl doc:name="create database" doc:id="069f4356-0ca3-455e-9673-36554dc91393" config-ref="Database_Config">
 			<db:sql><![CDATA[CREATE TABLE IF NOT EXISTS user_tbl (
@@ -19,6 +21,9 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 );]]></db:sql>
 		</db:execute-ddl>
 	</munit:before-suite>
+	<munit:after-suite name="mule-testcontainers-example-test-suiteAfter_Suite" doc:id="32eaafee-e0e8-45eb-9da3-6ad23fdb1244" >
+		<mule-testcontainers-db:stop-test-containers doc:name="Stop test containers" doc:id="7119c8d3-a98c-43d4-8484-cecaac676783" config-ref="Mule_testcontainers_db_Config"/>
+	</munit:after-suite>
 	<munit:before-test name="mule-testcontainers-example-test-suite-before-test" doc:id="adae8f75-5cc5-4eb1-9c0b-da5eb2948267" >
 		<logger level="INFO" doc:name="INFO Logger" doc:id="f3aa9d58-2bc9-41e8-9ee1-93cc850c8364" message="DELETE ALL AND ADD DEFAULT USER" />
 		<db:execute-script doc:name="delete content of table" doc:id="ed4c86c6-414c-4052-bac6-69847ef8e38c" config-ref="Database_Config">
