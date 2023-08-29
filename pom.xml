@@ -57,6 +57,9 @@
 					</execution>
 				</executions>
 				<configuration>
+				<environmentVariables>
+					<TESTCONTAINERS_RYUK_DISABLED>true</TESTCONTAINERS_RYUK_DISABLED>
+				</environmentVariables>
 					<coverage>
 						<runCoverage>false</runCoverage>
 						<formats>
@@ -79,7 +82,7 @@
 		<dependency>
 			<groupId>io.github.obscure1910</groupId>
 			<artifactId>mule-testcontainers-db</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<scope>test</scope>
 			<classifier>mule-plugin</classifier>
 		</dependency>
