@@ -39,6 +39,10 @@
 							<groupId>org.testcontainers</groupId>
 							<artifactId>postgresql</artifactId>
 						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>org.postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+						</sharedLibrary>
 					</sharedLibraries>
 				</configuration>
 			</plugin>

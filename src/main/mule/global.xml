@@ -10,8 +10,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	<configuration-properties doc:name="Configuration properties" doc:id="fd67f18f-74be-4708-a423-334b4c7b1512" file="${env}.properties" />
 	<global-property doc:name="Global Property" doc:id="cb41ea94-23e4-421a-ab7e-cf5e40013cdc" name="key" value="1234567891011121" />
 	<global-property doc:name="Global Property" doc:id="7b85381d-a065-47eb-8836-7e86035c6091" name="env" value="dev" />
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="ad5850f9-26a5-4212-8b23-80184bdfa22a" file="${env}-secured.properties" key="${key}" />
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="331d8672-44b6-4383-9ef1-9703b855fc81" >
-		<db:generic-connection driverClassName="${db.driver.classname}" url="${db.url}" user="${db.user}" password="${secure::db.password}"/>
+		<db:generic-connection driverClassName="${db.driver.classname}" url="${db.url}" user="${db.user}" password="${db.password}"/>
 	</db:config>
 </mule>
